@@ -11,7 +11,16 @@ For a succesfull instalation you will need :
     2 - scapy stable release version 
     3 - google Protocol buffers
 
+[ Features ]
+* Currently, you will be able to simulate :
+    1. Cablemodems
+    2. CMTS
+    3. DHCP Protocol
+    4. ARP Protocol 
+    5. ICMP Protocol ( WHO_HAS / IS_AT msgs )
 
+Performance :
+    
 
 [2 - Questions]
 
@@ -24,27 +33,27 @@ A - Because it is fun. Because if you use to play/develop with network devices y
 is to deploy something when you need the device at your side. Moreover, if you need to recreate a huge amount of devices,
 you simply can not buy hundreds of thounsands of devices "just for test". So here we are. Now, you will be able to simulate
 as many devices as you'd like :)
-By the momment, you will be able to play with basic cablemodems, but more functionality/devices/layers are comming.
+By the momment, you will be able to play with basic cablemodems and CMTS, but more functionality/devices/layers are comming.
 
 Q - Is this project close ?
 A - Absolutely no ! Actually, I had developed more layers / modules which will allow more realistic and complex simulations.
-Some layers are developed / under the radar are : CMTS , ARP , ICMP ( so you can ping virtual devices as if the where 
-real !), TFTP, DNS , NTP, VirtualPCs, TR-069 devices, IPCameras , and so on.....
+Some layers are developed (under the radar) and more are comming (i.e TFTP, DNS , NTP, VirtualPCs, TR-069 devices, 
+IPCameras , and so on.....)
 
-Q - When those layers will be released ?
+Q - When those layers\modules will be released ?
 A - The schedule is not set and may vary uppon demand. 
 
 Q - How can i contribute ?
-A - Join to the mailing list. Submit your fix / patch. 
+A - Join to the mailing list. Submit your new device, features, fix or patch. 
 
 Q - Do you need financial support 
-A - By the momment, this project its been developed in my spare time. Feel free to send me your contribution.
+A - By the momment, this project its been developed in my spare time. Feel free to send me your contribution. :)
 
-Q - I need to simulate device XXXX Could you please create the virtual device for me.
+Q - I need to simulate the device XXXX Could you please create the virtual device for me.
 A - If I have time and the device is requested by many people i will do my best. 
     If you want to pay for it, for sure i will have time :)
 
 
 matt.-
-Matias Torchinsky ( matts@gmx.co.uk )
+Matias Torchinsky ( tmatias@gmail.com )
 

@@ -1,50 +1,39 @@
-# Here you will find constants and common settings
-# Developed by Matias Torchinsky ( matts@gmx.co.uk )
+# Here you will find constants and common settings like logging levels, 
+# Developed by Matias Torchinsky ( tmatias@gmail.com )
 
 import logging
 import collections
 import Queue
 from scapy.all import *
-
 # simulator stats module
-# 1RELEASE
-# import stats
+import stats
 
 signalQueue = Queue.Queue()
-
-#1RELEASE
-#simulatorStats = stats.SimulatorStats()
+simulatorStats = stats.SimulatorStats()
 
 # define logger sections
 logging.basicConfig()
 
 CmtsLogger = logging.getLogger("CMTS")
 CmtsLogger.setLevel(logging.INFO)
-
 statechartLogger = logging.getLogger("STATECHART")
 statechartLogger.setLevel(logging.INFO)
-
 arpLogger = logging.getLogger("ARP")
 arpLogger.setLevel(logging.INFO)
-
 icmpLogger = logging.getLogger("ICMP")
 icmpLogger.setLevel(logging.INFO)
-
 dhcpLogger = logging.getLogger("DHCP")
 dhcpLogger.setLevel(logging.INFO)
-
 networkLogger = logging.getLogger("NETWORK")
 networkLogger.setLevel(logging.INFO)
-
 sniffLogger = logging.getLogger("SNIFFER")
 sniffLogger.setLevel(logging.INFO)
-
 SimulatorLogger = logging.getLogger("SIMULATOR")
 SimulatorLogger.setLevel(logging.INFO)
-
 tftpLogger = logging.getLogger("TFTP")
 tftpLogger.setLevel(logging.INFO)
 
+# Simulator states
 STOPPED=0
 RUNNING=10
 
@@ -67,4 +56,5 @@ TFTP_PORT = 69
 #ARP CONSTANTS
 WHO_HAS=1
 IS_AT=2
+
 ETH_GATEWAY = ''

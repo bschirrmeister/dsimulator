@@ -1,0 +1,21 @@
+[ Requirements ]
+
+1. scapy 1.2 / 2.0 : http://www.secdev.org/projects/scapy/
+2. google protocol buffers : http://code.google.com/apis/protocolbuffers/
+3. Python 2.5 : www.python.org
+
+
+[ Installation ]
+
+1. make sure you have python 2.5 is installed
+2. Download and install scapy
+3. Download and install google protocol buffers
+4. compile the file "simuProtocol_pb2.py" using "google protocol buffers"
+5. Verify scapy is up and running ( try start scapy by cmd line )
+6. Now you should be able to start the simulator. Remember you should run it
+with root permissions , becaouse it will be sniffing the network.
+   try "sudo python2.5 simulator.py"
+7. now, the simulator will be waiting for your client programs 
+
+
+
