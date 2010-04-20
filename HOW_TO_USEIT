@@ -1,2 +1,44 @@
 # XXX
 # pls feel
+
+There are different scenarios where you can use. 
+
+You will need:
+	1. DHCP server ( I'm using ISC dhcp server and you can download at www.isc.org )
+	2. DHCP server should have an scope for the CMTS network. So,if your virtualCMTS is configured
+	   with IP 31.0.0.1, then your DHCP server should have an scope for this LAN 
+           Here is my DHCP Server configuration
+
+		# avoid ping before allocate		
+		ping-check false; 
+	  	# add a scope for CMTS subnet 
+		subnet 31.0.0.0 netmask 255.0.0.0 {
+			range 31.0.0.2 31.0.254.254;
+			default-lease-time 6000;
+		}
+
+	
+Description of different scenarios where you will be able to use it.
+
+1. Everything in one machine.
+	1. The DHCP server must know how to route packets from CMTS to the simulator
+		sudo route add -net CMTS_NETWORK netmask  MASK dev eth0
+	2. Need to avoid arp request, so... ( no arp proxy, by the momment )
+		sudo arp -s IPCMTS CMTS_MACADDRESS
+	3. start simulator 
+		sudo python2.5 simulator.py
+	4. run 1cm.py from the sample files
+		python 1cm.py
+	You should see on server side and client side, 1 device had just acquire IP.
+
+2. Two machines on the same lan
+	1. Server A : DHCP server up and running
+	2. Server A : The DHCP server must know how to route packets from CMTS to the simulator 
+		sudo route add -net CMTS_NETWORK netmask  MASK dev eth0
+	3. Note : Becouse we are running on different hosts on the same LAN, no need to fix arp entry table.
+	4. Server B : simulator up and running
+	5. Verify the sample to execute ( 1cm.py ), verify where the SimulatorBridge is instanciated, it should point to the simulator ip address. 
+		simulator = SimulatorBridge('IP WHERE SIMULATOR RUNS',10003)
+	6. run 1cm.py sample file
+		python 1cm.py
+	You should see on server side and client side, 1 device had just acquire IP.
