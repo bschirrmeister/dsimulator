@@ -1,5 +1,4 @@
 # basic ethernet layer implementation for any virtual device
-# matts@gmx.co.uk
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
 
