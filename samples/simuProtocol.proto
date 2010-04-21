@@ -1,0 +1,52 @@
+package CMSimulator;
+
+message cmdID {
+    enum msgType {
+        CMD_NOCMD = 0;
+        CMD_SIMULATOR_START = 1;
+        CMD_SIMULATOR_STOP = 2;
+        CMD_SIMULATOR_SHOWCMTS = 3;
+        ANS_NOANSWER = 50;
+    }
+}
+
+message cmdSize {
+  required cmdID.msgType id  = 1 [ default = CMD_NOCMD ];
+  required int32 size = 2;
+}
+
+message listCM {
+    required string cmMac = 1;
+    required string cmtsMac = 2;
+    optional string msg = 3;
+    optional string ip = 4;
+    optional double timer_dhcp_discover = 5;
+    optional double timer_dhcp_offer    = 6;
+    optional double timer_dhcp_request  = 7;
+    optional double timer_dhcp_ack      = 8;
+}
+
+message clientCommand {
+    required uint32 id = 1 [ default = 0 ];
+
+    repeated listCM devices = 2;
+
+    message listCMTS {
+        required string cmtsMac = 1;
+        required string cmtsIP = 2;
+        optional string cmtsName = 3 [ default = 'CMTS_Unknown' ];
+        optional string helperAddressIP = 4;
+        optional string helperAddressMAC = 5 [ default = '' ]; 
+    }
+
+    repeated listCMTS CMTSDevices = 3;
+}
+
+message simulatorAnswer {
+  // required cmdID.msgType id  = 1 [ default = ANS_NOANSWER ];
+  required int32 id  = 1 [ default = 0 ];
+  repeated string macCmts = 2;
+  repeated string macCms = 3;
+  optional string ipCM = 4;  // Para que daniel lo use, luego hay que hacerlo bien
+  repeated listCM cablemodems = 5;
+}
