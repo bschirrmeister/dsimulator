@@ -17,34 +17,43 @@ You will need:
 Description of different scenarios where you will be able to use it.
 
 1. Everything in one machine.
-	0. Ensure DHCP server is running
-	1. The DHCP server must know how to route packets from CMTS to the simulator
-		sudo route add -net CMTS_NETWORK netmask  MASK dev eth0
-	2. Need to avoid arp request, so... ( no arp proxy, by the momment )
+	1. DHCP server should be running
+	2. The DHCP server must know how to route packets from CMTS to the simulator
+		sudo route add -net CMTS_NETWORK netmask MASK dev eth0 
+	3. Need to avoid arp request, so... ( no arp proxy, by the momment )
 		sudo arp -s IPCMTS CMTS_MACADDRESS
-	3. start simulator 
+	4. start simulator 
 		sudo python2.5 simulator.py
-	4. run 1cm.py from the sample files
+	5. run 1cm.py from the sample files
 		python 1cm.py	
 		# have in mind you shoud edit sample files to run in your network
 		# with the ipaddress where the simulator is running and the CMTS 
-	You should see on server side and client side, 1 device had just acquire IP.
+	    You should see on server side and client side, 1 device had just acquire IP.
+
+    6. ICMP Verification : You should be able to ping any virtual device. 
+    By the momment it is not possible to ping any virtual device from the same server, but you can ping any 
+    virtual device from any other machine ( have in mind, that machine should know how to route the CMTS or 
+    virtual devices networks )
 
 2. Two machines on the same lan
-	0. Ensure DHCP server is running
 	1. Server A : DHCP server up and running
-	2. Server A : DHCP server must know how to route packets from CMTS to the simulator 
-		sudo route add -net CMTS_NETWORK netmask  MASK dev eth0
+	2. Server A : DHCP server must know how to route packets from CMTS network to the simulator 
+		sudo route add -net CMTS_NETWORK netmask MASK dev eth0
 	3. Note : Because we are running on different hosts on the same LAN, no need to fix arp entry table.
 	4. Server B : simulator up and running
 	5. Verify the sample to execute ( 1cm.py ), verify where the SimulatorBridge is instanciated, it should point to the simulator ip address. 
 		simulator = SimulatorBridge('IP WHERE SIMULATOR RUNS',10003)
 		# should also verified where the CMTS is created (setupCMTS)
-		
 	6. run a sample file and verify logs
-		python 1cm.py
+		i.e: python 1cm.py
+    7. ICMP Verification : You should be able to ping any virtual device. 
+    By the momment it is not possible to ping any virtual device from the same server, but you can ping any 
+    virtual device from any other machine ( have in mind, that machine should know how to route the CMTS or 
+    virtual devices networks )
 
 	You should see on server side and client side, 1 device had just acquire IP.
+
+Note : This scenarios had been implemented in VirtualMachines with success.
 
 
 [ Samples ] 

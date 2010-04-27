@@ -1,17 +1,17 @@
 
-[1- INSTALL]
+[1 - INSTALL]
 
-[Platform Windows]
+[1.1 ** Platform Windows]
     Not tested yet.
  
-[Platform Linux]
+[1.2 ** Platform Linux]
 
 For a succesfull instalation you will need :
     1 - Python 2.5
     2 - scapy stable release version 
     3 - google Protocol buffers
 
-[ Features ]
+[2 - Features]
 * Currently, you will be able to simulate :
     1. Cablemodems
     2. CMTS
@@ -19,34 +19,44 @@ For a succesfull instalation you will need :
     4. ARP Protocol 
     5. ICMP Protocol ( WHO_HAS / IS_AT msgs )
 
-[ About Topology and network stuff ]
-If this is the first time you read about CMTS, then it is worth to read the next lines first. It will help you understand how different things works.
+[2.1 - About Topology and network stuff]
+If this is the first time you read about CMTS, then it is worth to read the next lines first. It will help you 
+understand how different things works.
 
 DEVICE ( CM ) -- BROADCAST DHCP DISCOVER ----> CMTS ---- UNICAST ----> DHCP SERVER
 DEVICE ( CM ) <--OFFER------------------------ CMTS <--- OFFER ------- DHCP SERVER
 DEVICE ( CM ) -- DHCP REQUEST ---------------> CMTS ---- UNICAST ----> DHCP SERVER
 DEVICE ( CM ) <- ACK ------------------------- CMTS <--- ACK --------- DHCP SERVER
 
-So, as you see the CMTS ( CableModem Termination system ) works as a router while doing DHCP discovering.  After this, for the rest of protocols it will work as a bridge. 
-This is important, so you can have a very basic picture of what is the CMTS, and why it is in the middle. Any Cable modem needs a CMTS. Sorry, but there is no magic at all.
+So, as you see the CMTS ( CableModem Termination system ) works as a router while doing DHCP discovering. 
+After this, for the rest of protocols it will work as a bridge.  This is important, so you can have a very basic 
+picture of what is the CMTS, and why it is in the middle. Any Cable modem needs a CMTS. 
+Sorry, but there is no magic at all.
 
 
-Performance:
-This simulator trys to make the simulation as real as possible. So, there are a lots of steps, we can improve for a better performance. This is not the main objective of this proyect. If you need beter performance, let me know. I will be working on a branch of this proyect but less educative and faster. 
+[3 - Performance]
+This simulator trys to make the simulation as real as possible. So, there are a lots aspects the simulation can be 
+modify for performance aspects. A lot of "layer communication" can be avoided, but I think this will help just 
+to make this less educative. If needed i can work on a better "performance-oriented" simulator. 
     
 
 [2 - Questions]
 
 Q - What is this 
-A - This is a very first opensource network device simulator. It allows to simulate ( by terms of network traffic ) in a realistic way, how different network devices works. 
+A - This is a very first opensource network device simulator. It allows to simulate ( by terms of network traffic ) 
+in a realistic way, how different network devices works. 
 
 Q - Why ?
-A - Because it is fun. Because if you use to play/develop with network devices you will understand how complex is to deploy something when you need the device at your side. Moreover, if you need to recreate a huge amount of devices, you simply can not buy hundreds of thounsands of devices "just for test". So here we are. Now, you will be able to simulate as many devices as you like :)
+A - Because it is fun. Because if you use to play/develop with network devices you will understand how complex 
+is to deploy something when you need the device at your side. Moreover, if you need to recreate a huge amount of devices,
+you simply can not buy hundreds of thounsands of devices "just for test". So here we are. Now, you will be able to simulate
+as many devices as you'd like :)
 By the momment, you will be able to play with basic cablemodems and CMTS, but more functionality/devices/layers are comming.
 
 Q - Is this project close ?
 A - Absolutely no ! Actually, I had developed more layers / modules which will allow more realistic and complex simulations.
-Some layers are developed (under the radar) and more are comming (i.e TFTP, DNS , NTP, VirtualPCs, TR-069 devices, IPCameras , and so on.....)
+Some layers are developed (under the radar) and more are comming (i.e TFTP, DNS , NTP, VirtualPCs, TR-069 devices, 
+IPCameras , and so on.....)
 
 Q - When those layers\modules will be released ?
 A - The schedule is not set and may vary uppon demand. 
@@ -61,6 +71,6 @@ Q - I need to simulate the device XXXX Could you please create the virtual devic
 A - If I have time and the device is requested by many people i will do my best. 
     If you want to pay for it, for sure i will have time :)
 
-
 matt.-
 Matias Torchinsky ( tmatias@gmail.com )
+
