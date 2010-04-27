@@ -111,13 +111,16 @@ class CMTSEthernet( GenericEthernet ):
         
         if (ETH_GATEWAY != ''):
             pkt[Ether].dst=ETH_GATEWAY
-        else:
-            pkt["Ethernet"].dst=self.context.dhcpServerMac
+        #else:
+        #    pkt["Ethernet"].dst=self.context.dhcpServerMac
 
         if pkt.haslayer('TFTP'):
             return pkt # nasty tricky for avoiding mac address rewrite...
-            
+
         if pkt.haslayer('DHCP'):
+            # send everything to the helperAddress
+            pkt["Ethernet"].dst=self.context.dhcpServerMac
+
             pkt["BOOTP"].giaddr=self.context.ip
             pkt["BOOTP"].hops+=1
             pkt["UDP"].sport=BOOTPS
@@ -137,7 +140,7 @@ class CMTS_On(State):
 
         CmtsLogger.debug("(%s:%s) Had just powered on",self.context.mac,self.context.name)
         self.spawn( CMTSEthernet(deviceKind="CMTS"), name="Ethernet")
-        self.spawn( icmp.ICMP(), name="ICMP")
+        self.spawn( icmp.ICMPlayer(), name="ICMP")
         self.spawn( arp.ARP_State(), name="ARP")
 
     def on_power_off(self, message):

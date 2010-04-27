@@ -1,7 +1,6 @@
 # basic ethernet layer implementation for any virtual device
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
-
 from constants import *
 from statechart import State, Message
 
@@ -28,7 +27,7 @@ class GenericEthernet(State):
         message.payload = self.pre_send_packet(message)
 
         if ( self.context.nexthop == "border_router" ):
-            # Send packet to network 
+            # Send packet to real network 
             sendp(message.payload)
         else:
             signalQueue.put_nowait(Message("send_packet",mac=self.context.nexthop,payload=message.payload))

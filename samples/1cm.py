@@ -30,7 +30,8 @@ if __name__ == "__main__":
     cmList = []
 
 	# Setup the birdge with the ip where the simulator is running...
-    simulator = SimulatorBridge('192.168.204.149',10003)
+    # simulator = SimulatorBridge('192.168.204.149',10003)
+    simulator = SimulatorBridge('localhost',10003)
     print "Client connected....."
 
     try:

@@ -89,7 +89,7 @@ class CM_On(simulator.CMState):
 
         self.spawn( CMEthernet( deviceKind = "CM") )
         self.spawn( arp.ARP_State(), name="ARP")
-        self.spawn( icmp.ICMP(), name="ICMP")
+        self.spawn( icmp.ICMPlayer(), name="ICMP")
         self.spawn( dhcp.DHCP_Idle(), name="DHCP")
 
     def on_power_off(self, message):
