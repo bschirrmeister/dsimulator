@@ -126,6 +126,15 @@ class CmdsListener(threading.Thread):
                 SimulatorLogger.debug("%s :: signal=%s", index.cmMac,index.msg)
                 self.simulator.signal( Message(index.msg,mac=index.cmMac) )
             simAnswer.id = ANS_OK
+        elif cmd.id == CMD_SIMULATOR_GETSTATUS_TFTP:
+            cmCounter = 0
+            for mac,dev in self.simulator.machine.cms.iteritems():
+                if (dev.tftp.bootfileSize > 0):
+                    cmCounter+=1
+
+            self.answer.msg = cmCounter
+            self.answer.setCmdId(ANS_GETSTATUS_TFTP)
+            # print "SHOWCMTS ANS =::",self.answer.answer
         elif cmd.id == CMD_SIMULATOR_GETSTATUS:
             cmCounter = 0     
             for mac,dev in self.simulator.machine.cms.iteritems():

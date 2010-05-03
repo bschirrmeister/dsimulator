@@ -15,6 +15,7 @@ import cmts
 import icmp
 import arp
 import dhcp
+import tftp
 from device import Device
 
 class CM(State, Device):
@@ -44,7 +45,7 @@ class CM(State, Device):
         # XXX
         # need an instance, because dont want to communicate dhcp/tftp via message.
         # Maybe should i have to change this to avoid dessign violations
-        # self.tftp = tftp.TFTPState()
+        self.tftp = tftp.TFTPState()
 
         # The device starts turned off 
         self.spawn(CM_Off() , name="CableModem off")
@@ -91,6 +92,7 @@ class CM_On(simulator.CMState):
         self.spawn( arp.ARP_State(), name="ARP")
         self.spawn( icmp.ICMPlayer(), name="ICMP")
         self.spawn( dhcp.DHCP_Idle(), name="DHCP")
+        self.spawn( tftp.TFTP_Idle(), name="TFTP")
 
     def on_power_off(self, message):
         return CM_Off()

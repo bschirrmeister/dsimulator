@@ -3,22 +3,15 @@
 from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
+from google.protobuf import service
+from google.protobuf import service_reflection
 from google.protobuf import descriptor_pb2
-# @@protoc_insertion_point(imports)
-
-
-DESCRIPTOR = descriptor.FileDescriptor(
-  name='simuProtocol.proto',
-  package='CMSimulator',
-  serialized_pb='\n\x12simuProtocol.proto\x12\x0b\x43MSimulator\"\x80\x01\n\x05\x63mdID\"w\n\x07msgType\x12\r\n\tCMD_NOCMD\x10\x00\x12\x17\n\x13\x43MD_SIMULATOR_START\x10\x01\x12\x16\n\x12\x43MD_SIMULATOR_STOP\x10\x02\x12\x1a\n\x16\x43MD_SIMULATOR_SHOWCMTS\x10\x03\x12\x10\n\x0c\x41NS_NOANSWER\x10\x32\"J\n\x07\x63mdSize\x12\x31\n\x02id\x18\x01 \x02(\x0e\x32\x1a.CMSimulator.cmdID.msgType:\tCMD_NOCMD\x12\x0c\n\x04size\x18\x02 \x02(\x05\"\xac\x01\n\x06listCM\x12\r\n\x05\x63mMac\x18\x01 \x02(\t\x12\x0f\n\x07\x63mtsMac\x18\x02 \x02(\t\x12\x0b\n\x03msg\x18\x03 \x01(\t\x12\n\n\x02ip\x18\x04 \x01(\t\x12\x1b\n\x13timer_dhcp_discover\x18\x05 \x01(\x01\x12\x18\n\x10timer_dhcp_offer\x18\x06 \x01(\x01\x12\x1a\n\x12timer_dhcp_request\x18\x07 \x01(\x01\x12\x16\n\x0etimer_dhcp_ack\x18\x08 \x01(\x01\"\x81\x02\n\rclientCommand\x12\r\n\x02id\x18\x01 \x02(\r:\x01\x30\x12$\n\x07\x64\x65vices\x18\x02 \x03(\x0b\x32\x13.CMSimulator.listCM\x12\x38\n\x0b\x43MTSDevices\x18\x03 \x03(\x0b\x32#.CMSimulator.clientCommand.listCMTS\x1a\x80\x01\n\x08listCMTS\x12\x0f\n\x07\x63mtsMac\x18\x01 \x02(\t\x12\x0e\n\x06\x63mtsIP\x18\x02 \x02(\t\x12\x1e\n\x08\x63mtsName\x18\x03 \x01(\t:\x0c\x43MTS_Unknown\x12\x17\n\x0fhelperAddressIP\x18\x04 \x01(\t\x12\x1a\n\x10helperAddressMAC\x18\x05 \x01(\t:\x00\"y\n\x0fsimulatorAnswer\x12\r\n\x02id\x18\x01 \x02(\x05:\x01\x30\x12\x0f\n\x07macCmts\x18\x02 \x03(\t\x12\x0e\n\x06macCms\x18\x03 \x03(\t\x12\x0c\n\x04ipCM\x18\x04 \x01(\t\x12(\n\x0b\x63\x61\x62lemodems\x18\x05 \x03(\x0b\x32\x13.CMSimulator.listCM')
-
 
 
 _CMDID_MSGTYPE = descriptor.EnumDescriptor(
   name='msgType',
   full_name='CMSimulator.cmdID.msgType',
-  filename=None,
-  file=DESCRIPTOR,
+  filename='msgType',
   values=[
     descriptor.EnumValueDescriptor(
       name='CMD_NOCMD', index=0, number=0,
@@ -41,303 +34,262 @@ _CMDID_MSGTYPE = descriptor.EnumDescriptor(
       options=None,
       type=None),
   ],
-  containing_type=None,
   options=None,
-  serialized_start=45,
-  serialized_end=164,
 )
 
 
 _CMDID = descriptor.Descriptor(
   name='cmdID',
   full_name='CMSimulator.cmdID',
-  filename=None,
-  file=DESCRIPTOR,
+  filename='simuProtocol.proto',
   containing_type=None,
   fields=[
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[],  # TODO(robinson): Implement.
   enum_types=[
     _CMDID_MSGTYPE,
   ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=36,
-  serialized_end=164,
-)
+  options=None)
 
 
 _CMDSIZE = descriptor.Descriptor(
   name='cmdSize',
   full_name='CMSimulator.cmdSize',
-  filename=None,
-  file=DESCRIPTOR,
+  filename='simuProtocol.proto',
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='CMSimulator.cmdSize.id', index=0,
       number=1, type=14, cpp_type=8, label=2,
-      has_default_value=True, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='size', full_name='CMSimulator.cmdSize.size', index=1,
       number=2, type=5, cpp_type=1, label=2,
-      has_default_value=False, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[],  # TODO(robinson): Implement.
   enum_types=[
   ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=166,
-  serialized_end=240,
-)
+  options=None)
 
 
 _LISTCM = descriptor.Descriptor(
   name='listCM',
   full_name='CMSimulator.listCM',
-  filename=None,
-  file=DESCRIPTOR,
+  filename='simuProtocol.proto',
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
       name='cmMac', full_name='CMSimulator.listCM.cmMac', index=0,
       number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='cmtsMac', full_name='CMSimulator.listCM.cmtsMac', index=1,
       number=2, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='msg', full_name='CMSimulator.listCM.msg', index=2,
       number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='ip', full_name='CMSimulator.listCM.ip', index=3,
       number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='timer_dhcp_discover', full_name='CMSimulator.listCM.timer_dhcp_discover', index=4,
       number=5, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='timer_dhcp_offer', full_name='CMSimulator.listCM.timer_dhcp_offer', index=5,
       number=6, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='timer_dhcp_request', full_name='CMSimulator.listCM.timer_dhcp_request', index=6,
       number=7, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='timer_dhcp_ack', full_name='CMSimulator.listCM.timer_dhcp_ack', index=7,
       number=8, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[],  # TODO(robinson): Implement.
   enum_types=[
   ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=243,
-  serialized_end=415,
-)
+  options=None)
 
 
 _CLIENTCOMMAND_LISTCMTS = descriptor.Descriptor(
   name='listCMTS',
   full_name='CMSimulator.clientCommand.listCMTS',
-  filename=None,
-  file=DESCRIPTOR,
+  filename='simuProtocol.proto',
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
       name='cmtsMac', full_name='CMSimulator.clientCommand.listCMTS.cmtsMac', index=0,
       number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='cmtsIP', full_name='CMSimulator.clientCommand.listCMTS.cmtsIP', index=1,
       number=2, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='cmtsName', full_name='CMSimulator.clientCommand.listCMTS.cmtsName', index=2,
       number=3, type=9, cpp_type=9, label=1,
-      has_default_value=True, default_value=unicode("CMTS_Unknown", "utf-8"),
+      default_value=unicode("CMTS_Unknown", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='helperAddressIP', full_name='CMSimulator.clientCommand.listCMTS.helperAddressIP', index=3,
       number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='helperAddressMAC', full_name='CMSimulator.clientCommand.listCMTS.helperAddressMAC', index=4,
       number=5, type=9, cpp_type=9, label=1,
-      has_default_value=True, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[],  # TODO(robinson): Implement.
   enum_types=[
   ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=547,
-  serialized_end=675,
-)
+  options=None)
 
 _CLIENTCOMMAND = descriptor.Descriptor(
   name='clientCommand',
   full_name='CMSimulator.clientCommand',
-  filename=None,
-  file=DESCRIPTOR,
+  filename='simuProtocol.proto',
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='CMSimulator.clientCommand.id', index=0,
       number=1, type=13, cpp_type=3, label=2,
-      has_default_value=True, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='devices', full_name='CMSimulator.clientCommand.devices', index=1,
       number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='CMTSDevices', full_name='CMSimulator.clientCommand.CMTSDevices', index=2,
       number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
   ],
   extensions=[
   ],
-  nested_types=[_CLIENTCOMMAND_LISTCMTS, ],
+  nested_types=[],  # TODO(robinson): Implement.
   enum_types=[
   ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=418,
-  serialized_end=675,
-)
+  options=None)
 
 
 _SIMULATORANSWER = descriptor.Descriptor(
   name='simulatorAnswer',
   full_name='CMSimulator.simulatorAnswer',
-  filename=None,
-  file=DESCRIPTOR,
+  filename='simuProtocol.proto',
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='CMSimulator.simulatorAnswer.id', index=0,
       number=1, type=5, cpp_type=1, label=2,
-      has_default_value=True, default_value=0,
+      default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='macCmts', full_name='CMSimulator.simulatorAnswer.macCmts', index=1,
       number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='macCms', full_name='CMSimulator.simulatorAnswer.macCms', index=2,
       number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='ipCM', full_name='CMSimulator.simulatorAnswer.ipCM', index=3,
       number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
       name='cablemodems', full_name='CMSimulator.simulatorAnswer.cablemodems', index=4,
       number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
   ],
   extensions=[
   ],
-  nested_types=[],
+  nested_types=[],  # TODO(robinson): Implement.
   enum_types=[
   ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=677,
-  serialized_end=798,
-)
+  options=None)
 
 
-_CMDID_MSGTYPE.containing_type = _CMDID;
 _CMDSIZE.fields_by_name['id'].enum_type = _CMDID_MSGTYPE
-_CLIENTCOMMAND_LISTCMTS.containing_type = _CLIENTCOMMAND;
 _CLIENTCOMMAND.fields_by_name['devices'].message_type = _LISTCM
 _CLIENTCOMMAND.fields_by_name['CMTSDevices'].message_type = _CLIENTCOMMAND_LISTCMTS
 _SIMULATORANSWER.fields_by_name['cablemodems'].message_type = _LISTCM
@@ -345,20 +297,14 @@ _SIMULATORANSWER.fields_by_name['cablemodems'].message_type = _LISTCM
 class cmdID(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _CMDID
-  
-  # @@protoc_insertion_point(class_scope:CMSimulator.cmdID)
 
 class cmdSize(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _CMDSIZE
-  
-  # @@protoc_insertion_point(class_scope:CMSimulator.cmdSize)
 
 class listCM(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _LISTCM
-  
-  # @@protoc_insertion_point(class_scope:CMSimulator.listCM)
 
 class clientCommand(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -366,16 +312,9 @@ class clientCommand(message.Message):
   class listCMTS(message.Message):
     __metaclass__ = reflection.GeneratedProtocolMessageType
     DESCRIPTOR = _CLIENTCOMMAND_LISTCMTS
-    
-    # @@protoc_insertion_point(class_scope:CMSimulator.clientCommand.listCMTS)
   DESCRIPTOR = _CLIENTCOMMAND
-  
-  # @@protoc_insertion_point(class_scope:CMSimulator.clientCommand)
 
 class simulatorAnswer(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _SIMULATORANSWER
-  
-  # @@protoc_insertion_point(class_scope:CMSimulator.simulatorAnswer)
 
-# @@protoc_insertion_point(module_scope)

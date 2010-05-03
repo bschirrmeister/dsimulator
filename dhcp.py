@@ -202,15 +202,18 @@ class DHCP_Acking(simulator.CMState):
 
         self.context.ip = discPacket[BOOTP].yiaddr
 
-        #if self.context.deviceKind == "CM":
-        #    for data in discPacket[DHCP].options:
-        #        if data[0]=='server_id': self.context.tftp.tftpIPserver=data[1]
-        #        elif data[0]==BOOTPS: self.context.tftp.bootfileName=data[1]
+        if self.context.deviceKind == "CM":
+            for data in discPacket[DHCP].options:
+                if data[0]=='server_id': self.context.tftp.tftpIPserver=data[1]
+                elif data[0]==BOOTPS: self.context.tftp.bootfileName=data[1]
 
         dhcpLogger.info("mac=%s ip=%s ACK_SEND (%d)",self.context.mac,self.context.ip, simulatorStats.getitem('DHCP_ACK'))
 
         # register the IP assigned into a dictionary of running devices
         self.context.emulator.runningDevices[discPacket[BOOTP].yiaddr]=self.context
+
+        self.signal( Message("tftp_readrequest",mac=self.context.mac) )
+
 
     def on_dhcp_renew(self, message):
         dhcpLogger.debug("(State=DHCP_Ack)::Renewing IP %s for CM %s (dhcp renew msg received)",self.context.ip,self.context.mac)
