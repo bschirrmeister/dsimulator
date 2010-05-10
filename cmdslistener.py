@@ -12,7 +12,7 @@ import threading
 from api import *
 from simulator import *
 from cpe import CPE
-#from cpe_buggy import CPE
+#from cpe_buggy import CPE  # for a buggy cpe implementation
 from cablemodem import CM
 
 class CmdsListener(threading.Thread):
