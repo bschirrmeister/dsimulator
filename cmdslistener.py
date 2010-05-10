@@ -11,6 +11,8 @@ import threading
 
 from api import *
 from simulator import *
+from cpe import CPE
+#from cpe_buggy import CPE
 from cablemodem import CM
 
 class CmdsListener(threading.Thread):
@@ -167,10 +169,22 @@ class CmdsListener(threading.Thread):
                 
             simAnswer.id = opResult
         elif cmd.id == CMD_SIMULATOR_ADDCPE:
-            SimulatorLogger.info("Cmd not implemented")
-            simAnswer.id = ANS_OK
+            for index in cmd.devices._values:
+                if self.simulator.machine.cms.has_key(index.cmMac): # if the CM associated to CPE exists 
+                    cm_cpe = self.simulator.machine.cms[ index.cmMac ]
+                    # CPE mac travels on cmtsMac field
+                    opResult = self.simulator.add_cpe( CPE(index.cmtsMac, cm=cm_cpe) )
+                else:
+                    SimulatorLogger.error("Invalid CM Mac(%s). CPE %s could not be registered",index.cmMac,index.cmtsMac)
+
+            simAnswer.id = ANS_ADDCPE
         elif cmd.id == CMD_SIMULATOR_GETAMOUNTCPES_WITH_IP:
-            SimulatorLogger.info("Cmd not implemented")
+            SimulatorLogger.debug("SIMULATOR_GETAMOUNTCPES_WITH_IP cmd received...")
+            cmsWithIP = 0
+            for mac,dev in self.simulator.machine.cpes.iteritems():
+                if (dev.ip != "0.0.0.0"): cmsWithIP+=1
+
+            simAnswer.ipCM = str(cmsWithIP)
             simAnswer.id = ANS_OK
         elif cmd.id == CMD_SIMULATOR_ADDCM:
             SimulatorLogger.info("Cmd received:ADDCM")
