@@ -18,6 +18,7 @@ For a succesfull instalation you will need :
     3. DHCP Protocol
     4. ARP Protocol 
     5. ICMP Protocol ( WHO_HAS / IS_AT msgs )
+    6. CPEs ( PCs behind a CableModem and buggy PCs )
 
 [2.1 - About Topology and network stuff]
 If this is the first time you read about CMTS, then it is worth to read the next lines first. It will help you 

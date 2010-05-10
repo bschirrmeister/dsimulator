@@ -61,3 +61,8 @@ Note : This scenarios had been implemented in VirtualMachines with success.
 1cm_renew.py    : Boot 1 Cable Modem and show how to force a renew 
 bootmeassures   : Boot some virtual devices and meassures how much time takes per device to acquire IP
 manyCMs.py 		: Boot as many Cable Modems as you want. In this sample, you will see power_on and dhcp_discover messages splitted. This is becouse, if you are trying to simulate thousands of devices, it will take a while. 
+1cm_1cpe.py     : Boot 1 Cable Modem and then 1 PC behind the Cable modem recentyly booted.
+
+Assume you want to test a buggy dhcp implementation. Well, you already have one. There are 3 code samples
+cpe_buggy.py : Implementes dhcp_buggy.py , which, basicallt get's looping for ever while trying to acquire an IP. If you want to try this, should 
+edit cmdslistener.py and, when creating a CPE, allow it to create a buggy_cpe (importing buggy_cpe.py instead of buggy_cpe.py )
