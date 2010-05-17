@@ -1,0 +1,10 @@
+Here you will find the configurations files i'm using while testing the development. 
+I had been testing everything with virtual machines , under linux ( Ubuntu ). 
+
+The network i had been using for the CMTS is : 31.0.0.0
+
+Have in mind, any server , machine who wants to communicate via any protocol ( ARP , ICMP , TFTP , DHCP , etc ) 
+should know how to route this packet. In my case adding the following route works 
+
+route add -net 31.0.0.0 netmask 255.0.0.0 dev eth0 
+
