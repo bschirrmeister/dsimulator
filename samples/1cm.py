@@ -30,13 +30,12 @@ if __name__ == "__main__":
     cmList = []
 
 	# Setup the birdge with the ip where the simulator is running...
-    # simulator = SimulatorBridge('192.168.204.149',10003)
     simulator = SimulatorBridge('localhost',10003)
     print "Client connected....."
 
     try:
 		# read clienttools.setupCMTS function signature to understand every parameter
-        cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.149', '00:0c:29:f4:c1:fa',simulator_ref=simulator) 
+        cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.153', '00:0c:29:fb:fa:46',simulator_ref=simulator) 
         # generates a list of totalCM len, with uniques mac address. i
         cmList = populateList(totalCM,cmtsMac)
     except:
