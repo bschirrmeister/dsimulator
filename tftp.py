@@ -13,13 +13,14 @@ class TFTPState(State):
     def __init__(self):
         super(TFTPState, self).__init__()
         self.blocksize = TFTP_BLOCKSIZE
-        self.my_tid = RandShort()._fix()
+        # source port can not be under one of the reserved ports
+        self.my_tid = RandNum(1025,2L**16 - 1)._fix()
         bind_bottom_up(UDP, TFTP, dport=self.my_tid)
         self.awaiting = 1
         self.server_tid = None
         self.tftpPacket = None
         self.tftpIPserver = None
-        self.tftpMACserver = None
+        self.tftpMACserver='00:0c:29:f4:c1:fa'
         self.bootfileName = None
         self.bootfileSize = 0
         self.bootfileSize_tmp = 0
@@ -38,20 +39,25 @@ class TFTP_dump_file(TFTPState, Automaton):
 class TFTP_Idle(TFTPState, Automaton):
     def on_tftp_readrequest(self, message):
         tftpref = self.context.tftp
-        
+       
+        # XXX FIX !! 
+        # tftp mac should be obteined automatically, but need to understand how arping works requesting self ip address
+        # tftpref.tftpMACserver='00:0c:29:f4:c1:fa'
+        tftpLogger.debug("CM(%s)::registering TFTPServer(%s,%s)",self.context.mac, tftpref.tftpIPserver, tftpref.tftpMACserver)
+
         if ( tftpref.tftpIPserver is None):
             tftpLogger.error("TFTP(%s)::Could not retrieve TFTP Server(%s) macaddress",self.context.mac, tftpref.tftpIPserver)
             return self
 
         # obtain tftp server mac address by ARP 
-        ans = arping(tftpref.tftpIPserver)
-        if ( len(ans[0]) > 0 ):
+        # ans = arping(tftpref.tftpIPserver)
+        # if ( len(ans[0]) > 0 ):
             # means we received an answer        
-            tftpref.tftpMACserver = ans[0][0][1]['Ethernet'].src
-            tftpLogger.debug("CM(%s)::registering TFTPServer(%s,%s)",self.context.mac, tftpref.tftpIPserver, tftpref.tftpMACserver)
-        else:
-            tftpLogger.error("CM(%s)::Could not retrieve TFTP Server(%s) macaddress",self.context.mac, tftpref.tftpIPserver)
-            return self
+        #     tftpref.tftpMACserver = ans[0][0][1]['Ethernet'].src
+        #    tftpLogger.debug("CM(%s)::registering TFTPServer(%s,%s)",self.context.mac, tftpref.tftpIPserver, tftpref.tftpMACserver)
+        # else:
+        #     tftpLogger.error("CM(%s)::Could not retrieve TFTP Server(%s) macaddress",self.context.mac, tftpref.tftpIPserver)
+        #     return self
 
         et=Ether(dst=tftpref.tftpMACserver,src='')
         tftpPacket=et/IP(src=self.context.ip,dst=tftpref.tftpIPserver)/UDP(sport=tftpref.my_tid,dport=TFTP_PORT)/TFTP()
@@ -106,7 +112,7 @@ class TFTP_ReceivingFile(TFTPState, Automaton):
         tftpref = self.context.tftp
     
         if TFTP_ERROR in message.payload:
-            tftpLogger.error("TFTP Error !!!")
+            tftpLogger.error("Error !!!")
             message.payload.show()
             return self
 
@@ -116,7 +122,7 @@ class TFTP_ReceivingFile(TFTPState, Automaton):
                     tftpref.server_tid = message.payload[UDP].sport
                     message.payload[UDP].dport = tftpref.server_tid
             else:
-                tftpLogger.error("TFTP::Error receiving !!. Wrong bloknumber. %d vs awaiting=%d !!" ,message.payload[TFTP_DATA].block, tftpref.awaiting)
+                tftpLogger.error("Error receiving !!. Wrong bloknumber. %d vs awaiting=%d !!" ,message.payload[TFTP_DATA].block, tftpref.awaiting)
                 message.payload.show()
 
         if Raw in message.payload:
@@ -124,7 +130,7 @@ class TFTP_ReceivingFile(TFTPState, Automaton):
         else:
             recvd = ""
 
-        tftpLogger.debug("TFTP_ReceivingFile::CM %s had received file portion. Awaiting block %d len(recvd)=%d blocksize=%d",self.context.ip,tftpref.awaiting,len(recvd),self.blocksize)
+        tftpLogger.debug("ReceivingFile::CM %s had received file portion. Awaiting block %d len(recvd)=%d blocksize=%d",self.context.ip,tftpref.awaiting,len(recvd),self.blocksize)
         tftpref.bootfileSize_tmp += len(recvd)
         tftpref.bootfile += recvd
 

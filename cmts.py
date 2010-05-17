@@ -107,6 +107,7 @@ class CMTSEthernet( GenericEthernet ):
         return pkt
         
     def pre_send_packet(self,message): 
+        " send packets to real network ..."
         pkt = message.payload
         
         if (ETH_GATEWAY != ''):
@@ -120,6 +121,7 @@ class CMTSEthernet( GenericEthernet ):
         if pkt.haslayer('DHCP'):
             # send everything to the helperAddress
             pkt["Ethernet"].dst=self.context.dhcpServerMac
+            pkt["Ethernet"].src=self.context.mac
 
             pkt["BOOTP"].giaddr=self.context.ip
             pkt["BOOTP"].hops+=1
@@ -131,6 +133,22 @@ class CMTSEthernet( GenericEthernet ):
 
         pkt['Ethernet'].src = self.context.mac
         return pkt
+
+    def on_send_packet(self, message):
+        """ Sending a packet to the real network from the CMTS point of view..."""
+        if not message.payload.haslayer('TFTP'):
+            message.payload['Ethernet'].src = self.context.mac
+
+        message.payload = self.pre_send_packet(message)
+
+
+        if ( self.context.nexthop == "border_router" ):
+            # Send packet to real network 
+            sendp(message.payload)
+        else:
+            signalQueue.put_nowait(Message("send_packet",mac=self.context.nexthop,payload=message.payload))
+
+        return self
 
 class CMTS_On(State):
     def __init__(self, ctx=None):

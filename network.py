@@ -59,7 +59,7 @@ class dequeuer(Thread):
                 if ( pkg['Ethernet'].dst is not None ): 
                     self.__simqueue.put_nowait(Message("packet_in",mac=pkg['Ethernet'].dst,payload=pkg))
             except (AttributeError,IndexError):  # we could sniff wifi protocol (802.3)    
-                continue    
+                networkLogger.warning("Got packet without Ethernet layer !")
 
     def stop(self):
         self.__run = False

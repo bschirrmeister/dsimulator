@@ -31,7 +31,7 @@ sniffLogger.setLevel(logging.INFO)
 SimulatorLogger = logging.getLogger("SIMULATOR")
 SimulatorLogger.setLevel(logging.INFO)
 tftpLogger = logging.getLogger("TFTP")
-tftpLogger.setLevel(logging.DEBUG)
+tftpLogger.setLevel(logging.INFO)
 
 # Simulator states
 STOPPED=0

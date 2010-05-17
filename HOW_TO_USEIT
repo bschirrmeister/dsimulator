@@ -1,5 +1,8 @@
 There are different scenarios where you can use. 
 
+NOTE : If you want to use TFTP server, please modify tftp.py setting up the variable tftpMACserver, which 
+by the momment is hardcoded
+
 You will need:
 	1. DHCP server ( I'm using ISC dhcp server and you can download at www.isc.org )
 	2. DHCP server should have an scope for the CMTS network. So,if your virtualCMTS is configured
@@ -13,6 +16,8 @@ You will need:
 			range 31.0.0.2 31.0.254.254;
 			default-lease-time 6000;
 		}
+    3. TFTP Server: If you dont want to use tftp server, by the momment should need to comment the tftp_readrequest 
+       signal on dhcp.py
 
 Description of different scenarios where you will be able to use it.
 
@@ -31,27 +36,29 @@ Description of different scenarios where you will be able to use it.
 	    You should see on server side and client side, 1 device had just acquire IP.
 
     6. ICMP Verification : You should be able to ping any virtual device. 
-    By the momment it is not possible to ping any virtual device from the same server, but you can ping any 
-    virtual device from any other machine ( have in mind, that machine should know how to route the CMTS or 
-    virtual devices networks )
+
 
 2. Two machines on the same lan
 	1. Server A : DHCP server up and running
-	2. Server A : DHCP server must know how to route packets from CMTS network to the simulator 
+	2. Server A : TFTP server up and running (optional)
+	3. Server A : DHCP server must know how to route packets from CMTS network to the simulator 
 		sudo route add -net CMTS_NETWORK netmask MASK dev eth0
-	3. Note : Because we are running on different hosts on the same LAN, no need to fix arp entry table.
-	4. Server B : simulator up and running
-	5. Verify the sample to execute ( 1cm.py ), verify where the SimulatorBridge is instanciated, it should point to the simulator ip address. 
+	4. Note : Because we are running on different hosts on the same LAN, no need to fix arp entry table.
+	5. Server B : simulator up and running
+	6. Verify the sample to execute ( 1cm.py ), verify where the SimulatorBridge is instanciated, it should point to the simulator ip address. 
 		simulator = SimulatorBridge('IP WHERE SIMULATOR RUNS',10003)
 		# should also verified where the CMTS is created (setupCMTS)
-	6. run a sample file and verify logs
+	7. run a sample file and verify logs
 		i.e: python 1cm.py
-    7. ICMP Verification : You should be able to ping any virtual device. 
-    By the momment it is not possible to ping any virtual device from the same server, but you can ping any 
-    virtual device from any other machine ( have in mind, that machine should know how to route the CMTS or 
-    virtual devices networks )
+    8. ICMP Verification : You should be able to ping any virtual device. 
 
-	You should see on server side and client side, 1 device had just acquire IP.
+	You should see on server side and client side, 1 device had just acquire IP and , if tftp request, should see 
+    how the virtual device is requesting and retriving the file ( is need, set tftpLogger on DEBUG level ).
+
+** Important ** : By the momment it is not possible to ping any virtual device nor request for files from tftp 
+    while running on the same server, but you can ping any virtual device and use any tftp server from any other 
+    machine ( have in mind, that machine should know how to route the virtual network your devices are using )
+
 
 Note : This scenarios had been implemented in VirtualMachines with success.
 
@@ -62,6 +69,9 @@ Note : This scenarios had been implemented in VirtualMachines with success.
 bootmeassures   : Boot some virtual devices and meassures how much time takes per device to acquire IP
 manyCMs.py 		: Boot as many Cable Modems as you want. In this sample, you will see power_on and dhcp_discover messages splitted. This is becouse, if you are trying to simulate thousands of devices, it will take a while. 
 1cm_1cpe.py     : Boot 1 Cable Modem and then 1 PC behind the Cable modem recentyly booted.
+
+[ config ] 
+dhcpd.conf      : the dhcpd.conf file i had been using while developing and testing.
 
 Assume you want to test a buggy dhcp implementation. Well, you already have one. There are 3 code samples
 cpe_buggy.py : Implementes dhcp_buggy.py , which, basicallt get's looping for ever while trying to acquire an IP. If you want to try this, should 

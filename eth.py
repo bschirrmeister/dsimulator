@@ -22,7 +22,7 @@ class GenericEthernet(State):
 
     def on_send_packet(self, message):
         """ Sending a packet to the real network """
-        message.payload['Ethernet'].src = self.context.mac
+        #message.payload['Ethernet'].src = self.context.mac
 
         message.payload = self.pre_send_packet(message)
 

@@ -75,6 +75,7 @@ class CMEthernet( eth.GenericEthernet ):
     def pre_in_packet(self,message): return message.payload
 
     def pre_send_packet(self,message): 
+        message.payload['Ethernet'].src = self.context.mac
         return message.payload
         
 
