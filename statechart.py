@@ -75,7 +75,7 @@ class State(object):
         assert(message is None, "Trying to insert null message into signal queues")
         sigqueue.put_nowait(message)
 
-class Message(object):
+class simMessage(object):
     def __init__(self, name, mac=None, payload=None):
         self.mac = mac
         self.name = name
