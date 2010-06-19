@@ -4,22 +4,30 @@
 [1.1 ** Platform Windows]
     Not tested yet.
  
-[1.2 ** Platform Linux]
+[1.2 ** Platform Linux] 
+    Tested on : Ubuntu , RedHat, CentOS
 
 For a succesfull instalation you will need :
-    1 - Python 2.5
-    2 - scapy stable release version 
+    1 - Python 2.5 / 2.6 
+    2 - scapy version ( 2.0.0.5 beta or latest stable version)
     3 - google Protocol buffers
 
 [2 - Features]
 * Currently, you will be able to simulate :
     1. Cablemodems
-    2. CMTS
-    3. DHCP Protocol
-    4. ARP Protocol 
-    5. ICMP Protocol ( WHO_HAS / IS_AT msgs )
-    6. CPEs ( PCs behind a CableModem and buggy PCs )
-    7. TFTP Support
+    2. CPEs ( PCs behind a CableModem and buggy PCs )
+    3. CMTS
+* Layers already implemeted
+    1. Ethernet
+    2. ARP Protocol 
+    3. ICMP Protocol ( WHO_HAS / IS_AT msgs )
+    4. DHCP Protocol
+    5. TFTP Support
+* Features    
+    1. craft your own fuzzy packets
+    2. modular : Can build your own protocol and put it to any device. really easy
+    3. timers implemented for DHCP_RENEWS
+    4. client code samples for easy testing
 
 [2.1 - About Topology and network stuff]
 If this is the first time you read about CMTS, then it is worth to read the next lines first. It will help you 
