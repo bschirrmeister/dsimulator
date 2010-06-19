@@ -6,7 +6,7 @@
 
 from constants import *
 import sys
-from statechart import Message, State
+from statechart import State
 import simulator
 
 #import layers / modules
@@ -92,8 +92,8 @@ class CM_On(simulator.CMState):
         self.spawn( CMEthernet( deviceKind = "CM") )
         self.spawn( arp.ARP_State(), name="ARP")
         self.spawn( icmp.ICMPlayer(), name="ICMP")
-        self.spawn( dhcp.DHCP_Idle(), name="DHCP")
-        self.spawn( tftp.TFTP_Idle(), name="TFTP")
+        self.spawn( dhcp.DHCP_Idle(fuzzPackets=0), name="DHCP")
+        #self.spawn( tftp.TFTP_Idle(), name="TFTP")
 
     def on_power_off(self, message):
         return CM_Off()

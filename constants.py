@@ -8,8 +8,12 @@ from scapy.all import *
 # simulator stats module
 import stats
 
+# list for timer events.....
+eventTimers = []
+
 signalQueue = Queue.Queue()
 simulatorStats = stats.SimulatorStats()
+
 
 # define logger sections
 logging.basicConfig()
@@ -23,7 +27,7 @@ arpLogger.setLevel(logging.INFO)
 icmpLogger = logging.getLogger("ICMP")
 icmpLogger.setLevel(logging.INFO)
 dhcpLogger = logging.getLogger("DHCP")
-dhcpLogger.setLevel(logging.INFO)
+dhcpLogger.setLevel(logging.DEBUG)
 networkLogger = logging.getLogger("NETWORK")
 networkLogger.setLevel(logging.INFO)
 sniffLogger = logging.getLogger("SNIFFER")
@@ -58,3 +62,6 @@ WHO_HAS=1
 IS_AT=2
 
 ETH_GATEWAY = ''
+
+#Event Timers IDs
+TE_DHCP_RENEW = 100

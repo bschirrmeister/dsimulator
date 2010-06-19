@@ -3,7 +3,7 @@
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
 from constants import *
-from statechart import State, Message
+from statechart import State
 from device import Device
 
 #import layers / modules

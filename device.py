@@ -7,3 +7,16 @@ class Device(object):
     nexthop = None
     deviceKind = ''
     deviceDescr = ''
+    
+    #list of pending ids timers events
+    idTimers = [] 
+
+    def addTimerEvent(self,eventType):
+        pass
+         
+
+class TimerItem(object):
+    def __init__(self,ltime,mac,msg):
+        self.lTimer = ltime
+        self.mac = mac
+        self.msg = msg

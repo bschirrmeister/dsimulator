@@ -1,7 +1,7 @@
 # ICMP layer implementation. Just responds the "echo-request" msg.
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
-from statechart import State, Message
+from statechart import State, simMessage
 from constants import *
 
 class ICMPState(State):
@@ -32,7 +32,7 @@ class ICMPlayer(ICMPState):
         NICMPPacket['IP'].id=random.randint(1000,5000)
         #NICMPPacket['ICMP'].load = ICMPPacket['ICMP'].load
 
-        m = Message("send_packet", mac=self.context.mac, payload=NICMPPacket)
+        m = simMessage("send_packet", mac=self.context.mac, payload=NICMPPacket)
         self.signal(m)
 
         return self

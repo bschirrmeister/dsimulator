@@ -4,14 +4,16 @@
 
 from constants import *
 import sys
-from statechart import Message
+from statechart import simMessage
 import binascii
 import simulator
+from device import TimerItem
 
 class DHCP_Idle(simulator.CMState):
-    def __init__(self, context=None, parent=None):
+    def __init__(self, context=None, parent=None,fuzzPackets=0):
         self.context = context
         self.parent = parent
+        self.fuzzPackets = fuzzPackets
 
     def on_dhcp_discover(self, message):
         super(DHCP_Idle, self).__init__(self.context,parent=self)
@@ -22,21 +24,25 @@ class DHCP_Idle(simulator.CMState):
         self.context.ip = "0.0.0.0"
         udp=UDP(sport=BOOTPC,dport=BOOTPS)
 
-        newmac=''
-        for pos in self.context.mac.split(':'): newmac+=binascii.unhexlify(pos)
-        # xid is 4 byte long 
-        bootp=BOOTP(chaddr=newmac,xid=random.randint(0,2**32))
-        dhcp_options=DHCP(options=[("message-type","discover"),
+        # Build the pkg
+        if self.fuzzPackets:
+            self.bootp = BOOTP( CorruptedBytes(BOOTP(),0.9) )
+            self.bootp.op = 1 # BOOTPREQUEST
+            pkg=et/ip/udp/self.bootp/DHCP( CorruptedBytes(DHCP(options=["end"]) ,0.9) )
+        else:
+            newmac=''
+            for pos in self.context.mac.split(':'): newmac+=binascii.unhexlify(pos)
+            # xid is 4 byte long 
+            self.bootp=BOOTP(chaddr=newmac,xid=random.randint(0,2**32))
+            self.dhcp_options = DHCP(options=[("message-type","discover"),
                 ("relay_agent_Information",'\x01\x04\x88\x01\x00\x04\x02\x06'+newmac),
                 ("vendor_specific",'\x08\x03\x00\x20\x40\x04\x18\x31\x33\x34\x35\x30\x33\x34\x32\x35\x32\x31\x32\x39\x38\x36\x35\x30\x31\x30\x31\x30\x30\x30\x30\x05\x01\x31\x06\x19\x53\x42\x35\x31\x30\x31\x2d\x32\x2e\x34\x2e\x34\x2e\x30\x2d\x53\x43\x4d\x30\x30\x2d\x4e\x4f\x53\x48\x07\x04\x32\x31\x36\x34\x09\x06\x53\x42\x35\x31\x30\x31\x0a\x14\x4d\x6f\x74\x6f\x72\x6f\x6c\x61\x20\x43\x6f\x72\x70\x6f\x72\x61\x74\x69\x6f\x6e'),
                 ("vendor_class_id",'docsis2.0:053501010102010203010104010105010106010107010f0801100901000a01010b01180c01010d0200700e0200100f0101100400000004'),
                 ("param_req_list", self.context.requestedParameters),
                 "end"])
+            pkg=et/ip/udp/self.bootp/self.dhcp_options
 
-        # Build de tha pkg
-        pkg=et/ip/udp/bootp/dhcp_options
-
-        m = Message("send_packet", mac=self.context.mac, payload=pkg)
+        m = simMessage("send_packet", mac=self.context.mac, payload=pkg)
         dhcpLogger.debug("mac=%s DISCOVERING",self.context.mac)
 		
         simulatorStats.increment('DHCP_DISCOVER') # for stats
@@ -106,7 +112,7 @@ class DHCP_Requesting(simulator.CMState):
         # build the pkg
         pkg=et/ip/udp/bootp/dhcp_options
 
-        m = Message("send_packet", mac=self.context.mac, payload=pkg)
+        m = simMessage("send_packet", mac=self.context.mac, payload=pkg)
         self.signal(m)
 
         simulatorStats.increment('DHCP_REQUEST') # for stats
@@ -164,7 +170,7 @@ class DHCP_Renewing(simulator.CMState):
 
         pkg=et/ip/udp/bootp/dhcp_options
 
-        m = Message("send_packet", mac=self.context.mac, payload=pkg)
+        m = simMessage("send_packet", mac=self.context.mac, payload=pkg)
         self.signal(m)
 
         simulatorStats.increment('DHCP_RENEW') # for stats
@@ -203,28 +209,32 @@ class DHCP_Acking(simulator.CMState):
         self.context.ip = discPacket[BOOTP].yiaddr
 
         if self.context.deviceKind == "CM":
-
             # loop over the options sended by server
             for data in discPacket[DHCP].options:
                 # option 67 is bootfile-name
                 if data[0]==67: self.context.tftp.bootfileName=data[1]
+                if data[0]=='lease_time':
+                    tEvent = TimerItem(ltime=time.time() + data[1] / 2.0, mac=self.context.mac, msg="dhcp_renew")
+                    eventTimers.append(tEvent)
+                    dhcpLogger.warning("Adding timer event #(%d) %s for %s in %ds (%f)",len(eventTimers),tEvent.msg,tEvent.mac,data[1],tEvent.lTimer)
 
-        dhcpLogger.debug("mac=%s ip=%s tftp=%s ACK_SEND (%d)",self.context.mac,self.context.ip, discPacket[BOOTP].siaddr, simulatorStats.getitem('DHCP_ACK'))
+        dhcpLogger.debug("mac=%s ip=%s tftp=%s ACK RECEIVED (%d)",self.context.mac,self.context.ip, discPacket[BOOTP].siaddr, simulatorStats.getitem('DHCP_ACK'))
 
         # register the IP assigned into a dictionary of running devices
         self.context.emulator.runningDevices[discPacket[BOOTP].yiaddr]=self.context
 
+        # check if device has tftp instance reference
         if ( getattr(self.context,'tftp',False) ):
             # tftp server travels on siaddr
             self.context.tftp.tftpIPserver = discPacket[BOOTP].siaddr
-            self.signal( Message("tftp_readrequest",mac=self.context.mac) )
+            # self.signal( simMessage("tftp_readrequest",mac=self.context.mac) )
 
     def on_dhcp_renew(self, message):
         dhcpLogger.debug("(State=DHCP_Ack)::Renewing IP %s for CM %s (dhcp renew msg received)",self.context.ip,self.context.mac)
-        #signalQueue.put_nowait(Message("dhcp_renew",mac=self.context.mac))
+        signalQueue.put_nowait(simMessage("dhcp_renew",mac=self.context.mac))
         return DHCP_Renewing( renewPacket=message.payload, ctx=self.context, parent=self)
         
     def on_dhcp_discover(self,message):
         dhcpLogger.debug("(State=DHCP_Ack)::Booting up CM %s (dhcp discover msg received)",self.context.mac)
-        signalQueue.put_nowait(Message("dhcp_discover",mac=self.context.mac))
+        signalQueue.put_nowait(simMessage("dhcp_discover",mac=self.context.mac))
         return DHCP_Idle(self.context,parent=self)

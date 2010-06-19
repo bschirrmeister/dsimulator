@@ -2,7 +2,7 @@
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
 from constants import *
-from statechart import State, Message
+from statechart import State, simMessage
 from network import Network
 
 import simuProtocol_pb2
@@ -100,9 +100,10 @@ class RunningDevices(State):
 
 class Simulator(SocketServer.BaseRequestHandler):
     ''' Here is where everything starts '''
+
     def __init__(self):
         import cmdslistener
-
+        # Queue for signal events.....
         self.queue = Queue.Queue()
         self.machine = RunningDevices( queueSignal=self.queue )
         self.simulatorStatus = RUNNING
@@ -116,15 +117,30 @@ class Simulator(SocketServer.BaseRequestHandler):
     def run(self):
         # Launch a thread for client commands processing
         self.listener.start()
+        # Launch a thread for event timer
         self.startSimulator()
 
     def startSimulator(self):
         SimulatorLogger.info("#CMs to boot:%d",len(self.machine.cms))
+
         self.doLoop = True
 
         while self.doLoop:
             # retrieve signals from simulator signal queue
             message = self.get_new_message()
+
+            #look for scheduled events...
+            now = time.time()
+            #leventTimers=sorted(eventTimers, key=lambda item: now - item.lTimer)
+            eventTimers.sort(key=lambda item: now - item.lTimer, reverse=True)
+
+            # remove all timer events to execute
+            while (len(eventTimers)>0) and ((eventTimers[-1].lTimer - now) < 0):
+                # remove timer from list
+                tItem = eventTimers.pop()
+                print "adding ",tItem.msg,"event for ",tItem.mac,tItem.msg
+                signalQueue.put_nowait( simMessage(name=tItem.msg, mac=tItem.mac, payload=None) )
+
             if self.simulatorStatus:
                 if message is not None:
                     if message.name == 'exit':
@@ -146,7 +162,7 @@ class Simulator(SocketServer.BaseRequestHandler):
             else:
                 SimulatorLogger.debug("%s.....%s",mac,device.ip)
 
-        SimulatorLogger.info("Signals procesed in queue:%d",self.signalCounter)
+        SimulatorLogger.debug("Signals procesed in queue:%d",self.signalCounter)
         SimulatorLogger.info("#CM provisioned = %d\nSimulator Stats...",provisioned)
         for k,v in simulatorStats.getdata().iteritems():
             SimulatorLogger.info("%s.....%d",k,v)
@@ -156,6 +172,7 @@ class Simulator(SocketServer.BaseRequestHandler):
         try:
             message = signalQueue.get()
             signalQueue.task_done()
+            
             self.signalCounter+=1
         except (Empty):
             pass
@@ -183,6 +200,8 @@ if __name__ == "__main__":
     network = Network(simQueue=signalQueue)
     network.launch()
     
+    
+    #timerEvent.run()
     simulator.run()
 
     simuTime = time.time() - startTime

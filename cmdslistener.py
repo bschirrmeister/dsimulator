@@ -76,7 +76,7 @@ class CmdsListener(threading.Thread):
             SimulatorLogger.info("SIMULATOR_EXIT cmd received...")
             self.simulator.simulatorStatus = STOPPED
             self.simulator.doLoop=False
-            self.simulator.signal( Message('exit',mac='00:00:00:00:00:00') )
+            self.simulator.signal( simMessage('exit',mac='00:00:00:00:00:00') )
             simAnswer.id = ANS_OK
         elif cmd.id == CMD_SIMULATOR_GETCMIP:
             """ return for a given macaddres (specified in cmMac), it's IP in ipCM"""    
@@ -126,7 +126,7 @@ class CmdsListener(threading.Thread):
             SimulatorLogger.debug("SIMULATOR_SENDMSG cmd received...")
             for index in cmd.devices._values:
                 SimulatorLogger.debug("%s :: signal=%s", index.cmMac,index.msg)
-                self.simulator.signal( Message(index.msg,mac=index.cmMac) )
+                self.simulator.signal( simMessage(index.msg,mac=index.cmMac) )
             simAnswer.id = ANS_OK
         elif cmd.id == CMD_SIMULATOR_GETSTATUS_TFTP:
             cmCounter = 0
@@ -160,7 +160,7 @@ class CmdsListener(threading.Thread):
                 SimulatorLogger.info("SIMULATOR_ADDCMTS cmd received (%s:%s)=%s",index.cmtsMac,index.cmtsIP,cmtsOperation)
                 if ( cmtsOperation and index.helperAddressIP ):
                     # turn on CMTS ( by default CMTS will be on )
-                    self.simulator.signal( Message("power_on",mac=index.cmtsMac) )
+                    self.simulator.signal( simMessage("power_on",mac=index.cmtsMac) )
                     SimulatorLogger.info("SIMULATOR_ADDCMTS setting Helper Address Parameters (%s:%s)",index.helperAddressIP,index.helperAddressMAC)
                     opResult = newcmts.setDhcpServer(index.helperAddressIP,index.helperAddressMAC)
                 else:

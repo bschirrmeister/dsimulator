@@ -4,7 +4,7 @@
 
 import sniffer
 from threading import Thread
-from statechart import Message
+from statechart import simMessage
 from constants import *
 from scapy.all import *
 
@@ -22,7 +22,7 @@ class Network:
     def launch(self):
         # Start a new thread with a sniffer	
          self.__sniffer.start()
-        # Launch a new thread with the dequer
+        # Launch a new thread with the dequeer
          self.__dequeuer.start()
             
     def stop(self):
@@ -57,7 +57,7 @@ class dequeuer(Thread):
                 pkg = self.__realnetwork.get()
                 self.__realnetwork.task_done()
                 if ( pkg['Ethernet'].dst is not None ): 
-                    self.__simqueue.put_nowait(Message("packet_in",mac=pkg['Ethernet'].dst,payload=pkg))
+                    self.__simqueue.put_nowait( simMessage("packet_in",mac=pkg['Ethernet'].dst,payload=pkg) )
             except (AttributeError,IndexError):  # we could sniff wifi protocol (802.3)    
                 networkLogger.warning("Got packet without Ethernet layer !")
 

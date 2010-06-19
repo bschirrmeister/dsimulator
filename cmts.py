@@ -2,7 +2,7 @@
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
 from constants import *
-from statechart import State, Message
+from statechart import State, simMessage
 from eth import GenericEthernet
 
 from api import *
@@ -146,7 +146,7 @@ class CMTSEthernet( GenericEthernet ):
             # Send packet to real network 
             sendp(message.payload)
         else:
-            signalQueue.put_nowait(Message("send_packet",mac=self.context.nexthop,payload=message.payload))
+            signalQueue.put_nowait( simMessage("send_packet",mac=self.context.nexthop,payload=message.payload))
 
         return self
 

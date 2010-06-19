@@ -1,7 +1,7 @@
 # tftp layer implementation. 
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
-from statechart import State, Message
+from statechart import State, simMessage
 from constants import *
 
 from scapy.all import *
@@ -74,7 +74,7 @@ class TFTP_Idle(TFTPState, Automaton):
         # register tftp start time
         self.context.cmTimers['tftp_start'] = time.time()
 
-        self.signal( Message("send_packet", mac=self.context.mac, payload=self.last_packet) )
+        self.signal( simMessage("send_packet", mac=self.context.mac, payload=self.last_packet) )
         return TFTP_ReceivingFile()
 
 class TFTP_ack(TFTPState, Automaton):
@@ -89,7 +89,7 @@ class TFTP_ack(TFTPState, Automaton):
         tftpref.awaiting += 1
         self.lastPacket[UDP].dport = tftpref.server_tid
     
-        self.signal ( Message("send_packet", mac=self.context.mac, payload=self.lastPacket) )
+        self.signal ( simMessage("send_packet", mac=self.context.mac, payload=self.lastPacket) )
 
         if Raw in message.payload:
             recvd = message.payload[Raw].load
@@ -134,5 +134,5 @@ class TFTP_ReceivingFile(TFTPState, Automaton):
         tftpref.bootfileSize_tmp += len(recvd)
         tftpref.bootfile += recvd
 
-        self.signal ( Message("tftp_ack", mac=self.context.mac, payload=message.payload) )
+        self.signal ( simMessage("tftp_ack", mac=self.context.mac, payload=message.payload) )
         return TFTP_ack()

@@ -2,7 +2,7 @@
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
 from constants import *
-from statechart import State, Message
+from statechart import State, simMessage
 
 class EthState(State):
     def signal(self, message):
@@ -30,7 +30,7 @@ class GenericEthernet(State):
             # Send packet to real network 
             sendp(message.payload)
         else:
-            signalQueue.put_nowait(Message("send_packet",mac=self.context.nexthop,payload=message.payload))
+            signalQueue.put_nowait(simMessage("send_packet",mac=self.context.nexthop,payload=message.payload))
 
         return self
 
@@ -44,23 +44,23 @@ class GenericEthernet(State):
         if message.payload.haslayer('DHCP'):
             dhcpMsg  =  DHCPTypes[message.payload[DHCP].options[0][1]]
             msgName = 'dhcp_'+dhcpMsg
-            signalQueue.put_nowait(Message(msgName,mac=message.payload['Ethernet'].dst,payload=message.payload))
+            signalQueue.put_nowait(simMessage(msgName,mac=message.payload['Ethernet'].dst,payload=message.payload))
             return self
 
         if message.payload.haslayer('ARP'):
             arpLogger.debug("ARP_WHOHAS for %s", message.payload['ARP'].pdst)
-            signalQueue.put_nowait(Message("arp_whohas",mac=message.payload['ARP'].pdst,payload=message.payload))
+            signalQueue.put_nowait(simMessage("arp_whohas",mac=message.payload['ARP'].pdst,payload=message.payload))
             return self
 
         if message.payload.haslayer('ICMP'):
             pktType=message.payload['ICMP'].getfieldval('type')
             if pktType==ECHO_REQUEST: # ICMP echo-request
                 icmpLogger.debug("ICMP_ECHOREQUEST for %s", message.payload['Ethernet'].dst)
-                signalQueue.put_nowait(Message("icmp_echoRequest",mac=message.payload['Ethernet'].dst,payload=message.payload))
+                signalQueue.put_nowait(simMessage("icmp_echoRequest",mac=message.payload['Ethernet'].dst,payload=message.payload))
                 return self
 
         if message.payload.haslayer('TFTP'):
             tftpLogger.debug("device %s had just received a tftp packet" % (message.payload['Ethernet'].dst))
-            signalQueue.put_nowait(Message("tftp_recvblk",mac=message.payload['Ethernet'].dst,payload=message.payload))
+            signalQueue.put_nowait(simMessage("tftp_recvblk",mac=message.payload['Ethernet'].dst,payload=message.payload))
 
         return self
