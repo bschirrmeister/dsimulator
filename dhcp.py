@@ -26,8 +26,10 @@ class DHCP_Idle(simulator.CMState):
 
         # Build the pkg
         if self.fuzzPackets:
+            # XXX the corruption should be parametrisable. Now it's hardcoded
             self.bootp = BOOTP( CorruptedBytes(BOOTP(),0.9) )
-            self.bootp.op = 1 # BOOTPREQUEST
+            self.bootp.op = 1 # BOOTPREQUEST need to send a correct DHCP packet id
+            # XXX the corruption should be parametrisable. Now it's hardcoded
             pkg=et/ip/udp/self.bootp/DHCP( CorruptedBytes(DHCP(options=["end"]) ,0.9) )
         else:
             newmac=''
@@ -227,7 +229,7 @@ class DHCP_Acking(simulator.CMState):
         if ( getattr(self.context,'tftp',False) ):
             # tftp server travels on siaddr
             self.context.tftp.tftpIPserver = discPacket[BOOTP].siaddr
-            # self.signal( simMessage("tftp_readrequest",mac=self.context.mac) )
+            self.signal( simMessage("tftp_readrequest",mac=self.context.mac) )
 
     def on_dhcp_renew(self, message):
         dhcpLogger.debug("(State=DHCP_Ack)::Renewing IP %s for CM %s (dhcp renew msg received)",self.context.ip,self.context.mac)
