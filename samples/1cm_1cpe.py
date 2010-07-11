@@ -52,7 +52,6 @@ if __name__ == "__main__":
     ans = simulator.sendCommand( cmd )
     if (ans.id == api.ANS_ERR): stopSimulatior(simulator, ans.msg )
 
-
     # now, add a CPE to simulator
     cmd.id = api.CMD_SIMULATOR_ADDCPE
     # we already have the CM mac on pair.cmMac, so need to add CPE Mac

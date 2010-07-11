@@ -29,7 +29,7 @@ def stopSimulator( simualtor, msg=None):
 
 
 if __name__ == "__main__":
-    totalCM = 10
+    totalCM = 2
     cmList = []
 
 	# Setup the birdge with the ip where the simulator is running...
@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
     try:
 		# read clienttools.setupCMTS function signature to understand every parameter
-        # cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.149', '00:0c:29:f4:c1:fa',simulator_ref=simulator) 
-        cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.153', '00:0c:29:fb:fa:46',simulator_ref=simulator) 
+        cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.149', '00:0c:29:f4:c1:fa',simulator_ref=simulator) 
+        # cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.154', '00:0c:29:fb:fa:46',simulator_ref=simulator) 
     except:
         stopSimulator(simulator, "Could not setup CMTS. Aborting")
 
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         pair.cmtsMac = ''
         pair.msg = 'dhcp_discover'
         ans = simulator.sendCommand( msgscmd )
-        time.sleep(.03) # do not send them all togheter
+        time.sleep(.02) # do not send them all togheter
 
     cmsWithIP = clienttools.waitforips(simulator, totalCM, CMD_SIMULATOR_GETAMOUNTCMS_WITH_IP, delayBetweenLoops=.2)
 
