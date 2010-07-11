@@ -1,0 +1,8 @@
+Q:  How do I build fuzzy Packets ?
+A:  By the momment, this features is activated only for DHCP packets. 
+    The DHCP_Idle constructor receives a parameter "fuzzPackets" ( off by default ), which
+    allow to create fuzzy packets ( with a 90% of fuzz ). 
+
+    ie. self.spawn( dhcp.DHCP_Idle(fuzzPackets=True), name="DHCP")
+    will create a dhcp layer where every packet will be fuzzed    
+

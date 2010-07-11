@@ -8,7 +8,7 @@
     Tested on : Ubuntu , RedHat, CentOS
 
 For a succesfull instalation you will need :
-    1 - Python 2.5 / 2.6 
+    1 - Python 2.5 / 2.6{.2}
     2 - scapy version ( 2.0.0.5 beta or latest stable version)
     3 - google Protocol buffers
 
