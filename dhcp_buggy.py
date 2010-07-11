@@ -2,6 +2,10 @@
 # Following RFC 2131
 # Developed by Matias Torchinsky ( tmatias@gmail.com )
 
+# Here is a buggy DHCP layer , which allows you to simulate a device which will be requesting IP 4 ever.
+# You can use it for load testing, stress tests, whatever, bug hunting.
+# Remeber, every device that implements this layer ( instead of dhcp ), will never get an IP
+
 from constants import *
 import sys
 from statechart import Message

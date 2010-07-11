@@ -10,7 +10,7 @@ import simulator
 from device import TimerItem
 
 class DHCP_Idle(simulator.CMState):
-    def __init__(self, context=None, parent=None,fuzzPackets=0):
+    def __init__(self, context=None, parent=None,fuzzPackets=False):
         self.context = context
         self.parent = parent
         self.fuzzPackets = fuzzPackets

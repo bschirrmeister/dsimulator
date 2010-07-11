@@ -56,16 +56,6 @@ class CmdsListener(threading.Thread):
             SimulatorLogger.info("SIMULATOR_START cmd received...")
             self.simulator.simulatorStatus = RUNNING
             simAnswer.id = ANS_OK
-        elif cmd.id == CMD_SIMULATOR_FLUSHCMS:
-            SimulatorLogger.info("SIMULATOR_FLUSHCMS cmd received...")
-            self.simulator.machine.cms = {}
-            self.simulator.machine.IPcms = {}
-            simAnswer.id = ANS_OK
-        elif cmd.id == CMD_SIMULATOR_FLUSHCMTS:
-            SimulatorLogger.info("SIMULATOR_FLUSHCMTS cmd received...")
-            self.simulator.machine.IPcmts = {}
-            self.simulator.machine.cmts = {}
-            simAnswer.id = ANS_OK
         elif cmd.id == CMD_SIMULATOR_STOP:
             SimulatorLogger.info("SIMULATOR_STOP cmd received...")
             self.simulator.simulatorStatus = STOPPED
@@ -77,6 +67,16 @@ class CmdsListener(threading.Thread):
             self.simulator.simulatorStatus = STOPPED
             self.simulator.doLoop=False
             self.simulator.signal( simMessage('exit',mac='00:00:00:00:00:00') )
+            simAnswer.id = ANS_OK
+        elif cmd.id == CMD_SIMULATOR_FLUSHCMS:
+            SimulatorLogger.info("SIMULATOR_FLUSHCMS cmd received...")
+            self.simulator.machine.cms = {}
+            self.simulator.machine.IPcms = {}
+            simAnswer.id = ANS_OK
+        elif cmd.id == CMD_SIMULATOR_FLUSHCMTS:
+            SimulatorLogger.info("SIMULATOR_FLUSHCMTS cmd received...")
+            self.simulator.machine.IPcmts = {}
+            self.simulator.machine.cmts = {}
             simAnswer.id = ANS_OK
         elif cmd.id == CMD_SIMULATOR_GETCMIP:
             """ return for a given macaddres (specified in cmMac), it's IP in ipCM"""    
@@ -90,8 +90,6 @@ class CmdsListener(threading.Thread):
             else:
                 SimulatorLogger.error("SIMULATOR_GETCMIP did not find device %s",item.cmMac)
                 simAnswer.id = ANS_ERR
-            #for index in cmd.devices._values:
-            #    SimulatorLogger.debug("Retrieving IP(%s)", index.cmMac)
         elif cmd.id == CMD_SIMULATOR_SHOWCMS:
             """ return a list of macaddres registered into simulator """
             SimulatorLogger.info("SIMULATOR_SHOWCMS cmd received...")
@@ -169,15 +167,18 @@ class CmdsListener(threading.Thread):
                 
             simAnswer.id = opResult
         elif cmd.id == CMD_SIMULATOR_ADDCPE:
+            SimulatorLogger.info("Cmd received:ADD_CPE")
             for index in cmd.devices._values:
                 if self.simulator.machine.cms.has_key(index.cmMac): # if the CM associated to CPE exists 
                     cm_cpe = self.simulator.machine.cms[ index.cmMac ]
                     # CPE mac travels on cmtsMac field
                     opResult = self.simulator.add_cpe( CPE(index.cmtsMac, cm=cm_cpe) )
+                    SimulatorLogger.info("CPE %s added behing CM %s",index.cmtsMac,index.cmMac)
                 else:
                     SimulatorLogger.error("Invalid CM Mac(%s). CPE %s could not be registered",index.cmMac,index.cmtsMac)
+                    opResult = ANS_ERR
 
-            simAnswer.id = ANS_ADDCPE
+            simAnswer.id = opResult
         elif cmd.id == CMD_SIMULATOR_GETAMOUNTCPES_WITH_IP:
             SimulatorLogger.debug("SIMULATOR_GETAMOUNTCPES_WITH_IP cmd received...")
             cmsWithIP = 0
@@ -193,7 +194,6 @@ class CmdsListener(threading.Thread):
                 if self.simulator.machine.cmts.has_key(index.cmtsMac):
                     localcmts = self.simulator.machine.cmts[ index.cmtsMac ]
                     opResult = self.simulator.add_cm( CM( index.cmMac, cmts=localcmts) )
-                    #self.answer.answer.append( (index.cmMac,opResult) )
                 else:
                     pass
                     #self.answer.answer.append( (data.maclist[index][0], False) )

@@ -57,7 +57,7 @@ def genmacaddress(tuplas):
     return macpart
 
 def populateList(items, cmtsMac, octects=3):
-    """ populate cmList with #itens uniques CM address. """
+    """ populate cmList with #items uniques CM address. """
 
     cmList = []
     # sanity check. Mac address has only 6 octects
