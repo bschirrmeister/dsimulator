@@ -7,7 +7,7 @@ class Device(object):
     nexthop = None
     deviceKind = ''
     deviceDescr = ''
-    
+
     #list of pending ids timers events
     idTimers = [] 
 

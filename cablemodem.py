@@ -33,6 +33,10 @@ class CM(State, Device):
         self.dhcpServerMac = ""
         self.bootfileName = ""
 
+        self.dhcp_options = {}
+        # add some dhcp_options default values...
+        self.dhcp_options['vendor_class_id'] = 'docsis2.0:053501010102010203010104010105010106010107010f0801100901000a01010b01180c01010d0200700e0200100f0101100400000004'
+
         # CM specific 
         self.relayAgent = ""
         self.vendorSpecific = ""

@@ -9,10 +9,11 @@ import binascii
 import simulator
 from device import TimerItem
 
-class DHCP_Idle(simulator.CMState):
-    def __init__(self, context=None, parent=None,fuzzPackets=False):
+class DHCP_Idle( simulator.CMState ):
+    def __init__(self, context=None, parent=None, fuzzPackets=False):
         self.context = context
         self.parent = parent
+        # if true it will e fuzz dhcp packets
         self.fuzzPackets = fuzzPackets
 
     def on_dhcp_discover(self, message):
@@ -39,7 +40,7 @@ class DHCP_Idle(simulator.CMState):
             self.dhcp_options = DHCP(options=[("message-type","discover"),
                 ("relay_agent_Information",'\x01\x04\x88\x01\x00\x04\x02\x06'+newmac),
                 ("vendor_specific",'\x08\x03\x00\x20\x40\x04\x18\x31\x33\x34\x35\x30\x33\x34\x32\x35\x32\x31\x32\x39\x38\x36\x35\x30\x31\x30\x31\x30\x30\x30\x30\x05\x01\x31\x06\x19\x53\x42\x35\x31\x30\x31\x2d\x32\x2e\x34\x2e\x34\x2e\x30\x2d\x53\x43\x4d\x30\x30\x2d\x4e\x4f\x53\x48\x07\x04\x32\x31\x36\x34\x09\x06\x53\x42\x35\x31\x30\x31\x0a\x14\x4d\x6f\x74\x6f\x72\x6f\x6c\x61\x20\x43\x6f\x72\x70\x6f\x72\x61\x74\x69\x6f\x6e'),
-                ("vendor_class_id",'docsis2.0:053501010102010203010104010105010106010107010f0801100901000a01010b01180c01010d0200700e0200100f0101100400000004'),
+                ("vendor_class_id", self.context.dhcp_options['vendor_class_id']),
                 ("param_req_list", self.context.requestedParameters),
                 "end"])
             pkg=et/ip/udp/self.bootp/self.dhcp_options
@@ -105,7 +106,7 @@ class DHCP_Requesting(simulator.CMState):
         dhcp_options=DHCP(options=[("message-type","request"),
                 ("server_id",discPacket[IP].src),
                 ("relay_agent_Information",'\x01\x04\x88\x01\x00\x04\x02\x06'+newmac),
-                ("vendor_class_id",'docsis2.0:053501010102010203010104010105010106010107010f0801100901000a01010b01180c01010d0200700e0200100f0101100400000004'),
+                ("vendor_class_id", self.context.dhcp_options['vendor_class_id']),
                 #("param_req_list",'\x42\x43\x01\x03\x02\x04\x07\x7a'),
                 ("param_req_list", self.context.requestedParameters),
                 ("requested_addr",discPacket[BOOTP].yiaddr),
@@ -166,7 +167,7 @@ class DHCP_Renewing(simulator.CMState):
 
         dhcp_options=DHCP(options=[("message-type","request"),
                 ("relay_agent_Information",'\x01\x04\x88\x01\x00\x04\x02\x06'+newmac),
-                ("vendor_class_id",'docsis2.0:053501010102010203010104010105010106010107010f0801100901000a01010b01180c01010d0200700e0200100f0101100400000004'),
+                ("vendor_class_id", self.context.dhcp_options['vendor_class_id']),
                 ("param_req_list", self.context.requestedParameters),
                 "end"])
 
@@ -218,7 +219,7 @@ class DHCP_Acking(simulator.CMState):
                 if data[0]=='lease_time':
                     tEvent = TimerItem(ltime=time.time() + data[1] / 2.0, mac=self.context.mac, msg="dhcp_renew")
                     eventTimers.append(tEvent)
-                    dhcpLogger.warning("Adding timer event #(%d) %s for %s in %ds (%f)",len(eventTimers),tEvent.msg,tEvent.mac,data[1],tEvent.lTimer)
+                    #dhcpLogger.warning("Adding timer event #(%d) %s for %s in %ds (%f)",len(eventTimers),tEvent.msg,tEvent.mac,data[1],tEvent.lTimer)
 
         dhcpLogger.debug("mac=%s ip=%s tftp=%s ACK RECEIVED (%d)",self.context.mac,self.context.ip, discPacket[BOOTP].siaddr, simulatorStats.getitem('DHCP_ACK'))
 

@@ -29,7 +29,7 @@ def stopSimulator( simualtor, msg=None):
 
 
 if __name__ == "__main__":
-    totalCM = 2
+    totalCM = 100
     cmList = []
 
 	# Setup the birdge with the ip where the simulator is running...
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         pair.cmtsMac = ''
         pair.msg = 'dhcp_discover'
         ans = simulator.sendCommand( msgscmd )
-        time.sleep(.02) # do not send them all togheter
+        #time.sleep(.02) # do not send them all togheter
 
     cmsWithIP = clienttools.waitforips(simulator, totalCM, CMD_SIMULATOR_GETAMOUNTCMS_WITH_IP, delayBetweenLoops=.2)
 

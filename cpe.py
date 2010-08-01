@@ -27,7 +27,10 @@ class CPE(State, Device):
         self.nexthop = cm.mac
         self.deviceKind = "CPE"
 
-        # CPE specific 
+        # add some dhcp default values...
+        self.dhcp_options = {}
+        self.dhcp_options['vendor_class_id'] = 'MSFT 5.0'
+        # CPE specific requested parameters...
         self.requestedParameters = '\x42\x43\x01\x03\x02\x04\x07\x7a'
 
         self.spawn(CPE_Off() , name="CPE off")
@@ -62,7 +65,7 @@ class CPE_On(CPEState):
 
         self.spawn( CPEEthernet( deviceKind = "CPE") )
         self.spawn( arp.ARP_State(), name="ARP")
-        self.spawn( dhcp.DHCP_Idle(), name="DHCP")
+        self.spawn( dhcp.DHCP_Idle() , name="DHCP")
         self.spawn( icmp.ICMP(), name="ICMP")
         print "CPE is power_on"
 

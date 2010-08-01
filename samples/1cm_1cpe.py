@@ -35,7 +35,8 @@ if __name__ == "__main__":
 
     try:
         #cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.5.139', '00:0c:29:f4:c1:fa',simulator_ref=simulator) 
-        cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.153', '00:0c:29:fb:fa:46',simulator_ref=simulator) 
+        #cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.153', '00:0c:29:fb:fa:46',simulator_ref=simulator) 
+        cmtsMac = clienttools.setupCMTS('31.0.0.1','00:16:36:dd:fa:00', 'UBR 1000', '192.168.204.149', '00:0c:29:f4:c1:fa',simulator_ref=simulator) 
         # generates a list of #totalCM, with uniques mac address. Every CM on this list
         # will be assigned ( "connected" ), to CMTS specified on cmtsMac
         cmList = api.populateList(totalCM, cmtsMac)
