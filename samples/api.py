@@ -21,8 +21,8 @@ CMD_NOCMD                       = 0
 CMD_SIMULATOR_START             = 10        # tell simulator start processing packets
 CMD_SIMULATOR_STOP              = 11        # tell simulator stop processing packets
 CMD_SIMULATOR_EXIT              = 30        # tell simulator stop processing packets and exit
-CMD_SIMULATOR_ADDCM             = 12
-CMD_SIMULATOR_ADDCMTS           = 13
+CMD_SIMULATOR_ADDCM             = 12        # add a cable modem to the simulation
+CMD_SIMULATOR_ADDCMTS           = 13        # add a cmts where the cablemodem can / should be register
 CMD_SIMULATOR_SHOWCMTS          = 14
 CMD_SIMULATOR_SHOWCMS           = 15
 CMD_SIMULATOR_SHOWCMS_DETAILED  = 16
@@ -31,10 +31,10 @@ CMD_SIMULATOR_GETSTATUS         = 18
 CMD_SIMULATOR_GETSTATUS_TFTP    = 19
 CMD_SIMULATOR_GETCMIP           = 20         # return the IP (@ipCM) associated for a CM mac (cmMac).
 CMD_SIMULATOR_GETAMOUNTCMS      = 21
-CMD_SIMULATOR_GETAMOUNTCMS_WITH_IP = 22
-CMD_SIMULATOR_FLUSHCMS          = 50         # remove all running CMs devices
+CMD_SIMULATOR_GETAMOUNTCMS_WITH_IP = 22      # return how many CMs are registered with IP assigned 
+CMD_SIMULATOR_FLUSHCMS          = 50         # remove all registered CMs 
 CMD_SIMULATOR_FLUSHCMTS         = 60         # remove all running CMTS devices
-CMD_SIMULATOR_ADDCPE            = 100        # Add a CPE 
+CMD_SIMULATOR_ADDCPE            = 100        # add a CPE to the simulation
 CMD_SIMULATOR_GETAMOUNTCPES_WITH_IP = 101    # return how many CPEs has IP assigned
 
 ANS_NOANSWER            = 50
@@ -162,11 +162,5 @@ class SimCmd():
     def setCmdId(self, cmdid):
         self.cmdid = cmdid
 
-    def addCm(self, maclist):
-        if maclist is None:
-            raise Exception("macaddress list should not be None")
-        for element in maclist:
-            if (element not in maclist): self.maclist.appen(element)
-    
     def show(self):
             print "cmd: mac=%s cmd=%d msg=%s" % (self.mac,self.cmdid,self.msg)

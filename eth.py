@@ -18,7 +18,7 @@ class GenericEthernet(State):
 
     def signal(self, message):
         message.mac = self.context.mac
-        super(EthState, self).signal(message, signalQueue)
+        super(GenericEthernet, self).signal(message, signalQueue)
 
     def on_send_packet(self, message):
         """ Sending a packet to the real network """

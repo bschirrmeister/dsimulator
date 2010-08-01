@@ -153,7 +153,6 @@ class Simulator(SocketServer.BaseRequestHandler):
         provisioned = 0  
         for mac,device in self.machine.cms.iteritems():
             if (device.ip != '0.0.0.0'):
-                tt = device.cmTimers['dhcp_ack'] - device.cmTimers['dhcp_discover']
                 SimulatorLogger.debug("%s.....%s ProvTime=%d",mac,device.ip, device.cmTimers['dhcp_ack'] - device.cmTimers['dhcp_discover'])
                 #print "\n",mac,"......",device.ip, " ProvTime=", device.cmTimers['dhcp_ack'] - device.cmTimers['dhcp_discover'],
                 #if device.cmTimers.has_key('tftp_end') and device.cmTimers.has_key('tftp_start'):
@@ -169,14 +168,9 @@ class Simulator(SocketServer.BaseRequestHandler):
 
     def get_new_message(self):
         message = None
-        try:
-            message = signalQueue.get()
-            signalQueue.task_done()
-            
-            self.signalCounter+=1
-        except (Empty):
-            pass
-
+        message = signalQueue.get()
+        signalQueue.task_done()
+        self.signalCounter+=1
         return message
 
     def add_cpe(self, cpe):

@@ -39,7 +39,6 @@ class CmdsListener(threading.Thread):
 
         # read data from network
         cmd = simuProtocol_pb2.clientCommand()
-        cmd.id = simuProtocol_pb2.cmdID.CMD_NOCMD
  
         networkData = ''
         while len(networkData) < res[0]:
@@ -134,16 +133,10 @@ class CmdsListener(threading.Thread):
 
             self.answer.msg = cmCounter
             self.answer.setCmdId(ANS_GETSTATUS_TFTP)
-            # print "SHOWCMTS ANS =::",self.answer.answer
         elif cmd.id == CMD_SIMULATOR_GETSTATUS:
-            cmCounter = 0     
-            for mac,dev in self.simulator.machine.cms.iteritems():
-                if (dev.ip != "0.0.0.0"):
-                    cmCounter+=1
-                
-            self.answer.msg = cmCounter
+            # XXX not implemented...
             self.answer.setCmdId(ANS_GETSTATUS)
-            # print "SHOWCMTS ANS =::",self.answer.answer
+
         elif cmd.id == CMD_SIMULATOR_SHOWCMTS:
             SimulatorLogger.info("SIMULATOR_SHOWCMTS cmd received...")
             for mac in self.simulator.machine.cmts.iterkeys():
