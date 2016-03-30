@@ -1,0 +1,2 @@
+this a very flexible device network simulator.
+With this simulator you should be able not just to learn how different network devices works, but also, you can create your own network devices and recreate, by terms of traffic network , real network devices.
